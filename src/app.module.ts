@@ -4,6 +4,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Cat } from './cats/entities/cat.entity';
 import { BreedsModule } from './breeds/breeds.module';
 import { Breed } from './breeds/entities/breed.entity';
+import { UsersModule } from './users/users.module';
+import { User } from './users/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -20,9 +23,11 @@ import { Breed } from './breeds/entities/breed.entity';
       synchronize: true,
     }),
 
-      TypeOrmModule.forFeature([Cat, Breed]), // Necesito importar la clase que almacena el schema de la base de datos por medio del orm
+      TypeOrmModule.forFeature([Cat, Breed,User]), // Necesito importar la clase que almacena el schema de la base de datos por medio del orm
       CatsModule,
-      BreedsModule
+      BreedsModule,
+      UsersModule,
+      AuthModule
     
     
   ],

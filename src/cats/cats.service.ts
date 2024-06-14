@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,7 +9,7 @@ import { Breed } from 'src/breeds/entities/breed.entity';
 export class CatsService {
 
   constructor(@InjectRepository(Cat)private readonly catRepository: Repository<Cat>,
-  @InjectRepository(Breed) private readonly breedRepository: Repository<Breed>){   //Instanciamos la propiedad repository ya que nos permite usar metodos para hcer consultas
+  @InjectRepository(Breed) private readonly breedRepository: Repository<Breed>){   //Instanciamos la propiedad repository ya que nos permite usar metodos para hacer consultas entre 2 modulos
 
   }
 
@@ -19,11 +19,11 @@ export class CatsService {
 
     const breed = await this.breedRepository.findOneBy({name: createCatDto.breed})  //Aca obtenemos la informacion de la raza en la tabla breed, por medio de lo que manda el usuario
    
-    if (!breed) throw new NotFoundException('Breed not found')
+    if (!breed) throw new BadRequestException('Breed not found')
 
     return await this.catRepository.save({
       ...createCatDto,
-      breed
+      breed 
     })
     
     
