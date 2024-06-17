@@ -2,17 +2,13 @@ import { Body, Controller, Get, Post, UseGuards, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDTO } from './dto/register.dto';
 import { LoginDTO } from './dto/login.dto';
-import { AuthGuard } from './guard/auth.guard';
 import { Request } from 'supertest';
-import { Roles } from './decorators/roles.decorator';
-import { RolesGuard } from './guard/roles.guard';
-import { Role } from './enums/rol.enum';
+import { Role } from '../common/enums/rol.enum';
 import { Auth } from './decorators/auth.decorator';
+import { ActiveUser } from 'src/common/decorators/active-user.decorator';
+import { IUserActive } from 'src/common/interfaces/user-activate.interface';
 
-interface RequestWithUser extends Request {
 
-    user: {email: string, id: number, role: string}
-}
 
 @Controller('auth')
 export class AuthController {
@@ -44,11 +40,11 @@ export class AuthController {
 
     @Get('profile')
     @Auth(Role.USER)    //Usando decorador que contiene a otros dos decoradores
-    profile(@Req() req: RequestWithUser ){  
+    profile(@ActiveUser() user: IUserActive ){  //Decorador que me permite traer los datos el usuario
        
         
-
-        return this.authService.profile(req.user)     //Para acceder a infromacion del usuario a traves del token
+        console.log(user)
+        return this.authService.profile(user)     //Para acceder a infromacion del usuario a traves del token
     }
 
 

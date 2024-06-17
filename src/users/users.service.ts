@@ -19,9 +19,16 @@ export class UsersService {
     return await this.userRepository.findOneBy({email})
   }
 
+  async findByEmailWithPassword(email:string){
+    return await this.userRepository.findOne({
+      where: {email},
+      select: ['id','name','email', 'password', 'role']
+    })
+  }
+
   //Los metodos de arriba son los unicos que necesito para hacer el login
   findAll() {
-    return `This action returns all users`;
+    return this.userRepository.find()
   }
 
   findOne(id: number) {
